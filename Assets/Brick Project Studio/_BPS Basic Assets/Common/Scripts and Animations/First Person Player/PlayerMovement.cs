@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace SojaExiles
 
@@ -12,6 +13,9 @@ namespace SojaExiles
 
         public float speed = 5f;
         public float gravity = -15f;
+        public float jumpSpeed = 15f;
+        public float terminalVelocity = -20f;
+        public float vertSpeed;
 
         Vector3 velocity;
 
@@ -28,10 +32,24 @@ namespace SojaExiles
 
             controller.Move(move * speed * Time.deltaTime);
 
+            if (Input.GetButtonDown("Jump") && controller.isGrounded)
+            {
+                vertSpeed = jumpSpeed;
+            }
+            else if (!controller.isGrounded)
+            {
+                vertSpeed += gravity * 5 * Time.deltaTime;
+                if (vertSpeed < terminalVelocity)
+                {
+                    vertSpeed = terminalVelocity;
+                }
+            }
+
+            move.y = vertSpeed;
+
             velocity.y += gravity * Time.deltaTime;
 
             controller.Move(velocity * Time.deltaTime);
-
         }
     }
 }
