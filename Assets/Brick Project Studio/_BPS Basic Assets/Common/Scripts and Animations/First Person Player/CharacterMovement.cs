@@ -11,12 +11,18 @@ public class CharacterMovement: MonoBehaviour
     public float terminalVelocity = -20f;
     public float vertSpeed;
     private CharacterController controller;
+    private Camera cam;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
-    }
 
+        cam = GetComponent<Camera>();
+
+        //hide the mouse cursor at the centre of screen
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
     void Update()
     {
         Vector3 moveDirection = Vector3.zero;
