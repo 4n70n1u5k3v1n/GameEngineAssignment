@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ShrinkPlayer : MonoBehaviour
 {
-    [SerializeField] Vector3 shrinkSize = new Vector3(0.4f, 0.4f, 0.4f);
+    [SerializeField] Vector3 shrinkSize = new Vector3(0.2f, 0.2f, 0.2f);
     [SerializeField] float shrinkOffset = 0.2f;
     [SerializeField] float shrinkSpeed = 3f;
     [SerializeField] float shrinkJumpSpeed = 3f;
@@ -20,7 +20,6 @@ public class ShrinkPlayer : MonoBehaviour
             other.GetComponent<CharacterMovement>().speed = shrinkSpeed;
             other.GetComponent<CharacterMovement>().jumpSpeed = shrinkJumpSpeed;
             other.GetComponent<CharacterMovement>().gravity = shrinkGravity;
-            GetComponent<MeshRenderer>().enabled = true;
             GetComponent<ShrinkPlayer>().enabled = false;
         }
     }
