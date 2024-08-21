@@ -17,8 +17,8 @@ public class PlayerInteraction: MonoBehaviour
     //variable needed for battery machine and button
     public GameObject button; //the button that should turn green and become interactable
     public Material activeButtonMaterial; //material to apply when the button becomes active
-    private int batterySlotCount = 4; // Number of battery slots
-    private int filledSlots = 0; // Number of filled battery slots
+    private int batterySlotCount = 4; //number of battery slots
+    private int filledSlots = 0; //number of filled battery slots
     [SerializeField] GameObject ovenDoor;
 
     void Start()
@@ -126,13 +126,9 @@ public class PlayerInteraction: MonoBehaviour
 
     IEnumerator OpenOven()
     {
-        Debug.Log("before 5");
-        new WaitForSeconds(5);
-        Debug.Log("after 5");
         ovenDoor.GetComponent<Animator>().enabled = true;
         ovenDoor.GetComponent<OvenFlip>().enabled = true;
         button.layer = 0;
-        Debug.Log("after all");
         yield return null;
     }
 }
