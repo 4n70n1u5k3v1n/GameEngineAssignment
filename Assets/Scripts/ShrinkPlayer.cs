@@ -13,13 +13,15 @@ public class ShrinkPlayer : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Triggered");
         if (other.CompareTag("Player"))
         {
+            Debug.Log("Entered if");
             other.transform.localScale = Vector3.Scale(other.transform.localScale, shrinkSize);
             other.GetComponent<CharacterController>().stepOffset = shrinkOffset;
-            other.GetComponent<CharacterMovement>().speed = shrinkSpeed;
-            other.GetComponent<CharacterMovement>().jumpSpeed = shrinkJumpSpeed;
-            other.GetComponent<CharacterMovement>().gravity = shrinkGravity;
+            other.GetComponent<CharacterMovement1>().speed = shrinkSpeed;
+            other.GetComponent<CharacterMovement1>().jumpSpeed = shrinkJumpSpeed;
+            other.GetComponent<CharacterMovement1>().gravity = shrinkGravity;
             GetComponent<ShrinkPlayer>().enabled = false;
         }
     }
