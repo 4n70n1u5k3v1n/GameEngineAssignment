@@ -7,7 +7,7 @@ public class DragAndDrop_ : MonoBehaviour
 {
     public GameObject SelectedPiece;
     private bool isDragging = false;
-    private Camera mainCamera;
+    public Camera mainCamera;
     public float snapThreshold = 0.8f; // Adjust this value as needed
     private Dictionary<GameObject, Vector3> correctPositions = new Dictionary<GameObject, Vector3>();
     public float zoomSpeed = 10f; // Speed of zooming
@@ -16,7 +16,7 @@ public class DragAndDrop_ : MonoBehaviour
     {
         mainCamera = Camera.main;
 
-        // Initialize correct positions for each puzzle piece
+        // Initialize correct positions for each puzzle piece using local positions
         correctPositions.Add(GameObject.Find("Piece (0)"), new Vector3(-4.3432f, 1.2459f, 4.9769f));
         correctPositions.Add(GameObject.Find("Piece (1)"), new Vector3(-4.3549f, 1.2459f, 5.0566f));
         correctPositions.Add(GameObject.Find("Piece (2)"), new Vector3(-4.3432f, 1.2459f, -0.684f));
@@ -78,16 +78,16 @@ public class DragAndDrop_ : MonoBehaviour
                 isDragging = false;
                 // Ensure the piece lays flat on the surface
                 Vector3 MousePoint = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, mainCamera.WorldToScreenPoint(SelectedPiece.transform.position).z));
-                SelectedPiece.transform.position = MousePoint;
+                SelectedPiece.transform.localPosition = SelectedPiece.transform.parent.InverseTransformPoint(MousePoint);
 
                 // Check if the piece is close enough to its correct position
                 if (correctPositions.ContainsKey(SelectedPiece))
                 {
                     Vector3 correctPosition = correctPositions[SelectedPiece];
-                    if (Vector3.Distance(SelectedPiece.transform.position, correctPosition) <= snapThreshold)
+                    if (Vector3.Distance(SelectedPiece.transform.localPosition, correctPosition) <= snapThreshold)
                     {
                         // Snap to the correct position
-                        SelectedPiece.transform.position = correctPosition;
+                        SelectedPiece.transform.localPosition = correctPosition;
                     }
                 }
 
@@ -99,7 +99,7 @@ public class DragAndDrop_ : MonoBehaviour
         {
             // Update the position of the selected piece to follow the mouse cursor
             Vector3 MousePoint = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, mainCamera.WorldToScreenPoint(SelectedPiece.transform.position).z));
-            SelectedPiece.transform.position = MousePoint;
+            SelectedPiece.transform.localPosition = SelectedPiece.transform.parent.InverseTransformPoint(MousePoint);
         }
 
         // Handle zooming with the mouse scroll wheel
@@ -108,8 +108,8 @@ public class DragAndDrop_ : MonoBehaviour
             float scroll = Input.GetAxis("Mouse ScrollWheel");
             if (scroll != 0.0f)
             {
-                Vector3 newPosition = SelectedPiece.transform.position + mainCamera.transform.forward * scroll * zoomSpeed;
-                SelectedPiece.transform.position = newPosition;
+                Vector3 newPosition = SelectedPiece.transform.localPosition + mainCamera.transform.forward * scroll * zoomSpeed;
+                SelectedPiece.transform.localPosition = newPosition;
             }
         }
     }
