@@ -7,7 +7,7 @@ public class DragAndDrop_ : MonoBehaviour
 {
     public GameObject SelectedPiece;
     private bool isDragging = false;
-    private Camera mainCamera;
+    public Camera mainCamera;
     public float snapThreshold = 0.8f; // Adjust this value as needed
     private Dictionary<GameObject, Vector3> correctPositions = new Dictionary<GameObject, Vector3>();
     public float zoomSpeed = 10f; // Speed of zooming
