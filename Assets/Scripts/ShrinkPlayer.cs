@@ -14,7 +14,11 @@ public class ShrinkPlayer : MonoBehaviour
     private float shrinkDuration = 4f;
 
     //variable needed to disable main entrance after being shrunk
-    [SerializeField] GameObject glassDoor;
+    [SerializeField] private GameObject glassDoor;
+    [SerializeField] private GameObject exitBlocker;
+
+    //variable needed to enable mouse AI after being shrunk
+    [SerializeField] private GameObject mouse;
 
     //variable needed for shrink cutscene
     private Camera camMain;
@@ -64,10 +68,13 @@ public class ShrinkPlayer : MonoBehaviour
         camMain.gameObject.SetActive(false);
         camCutScene.SetActive(true);
         yield return new WaitForSeconds(shrinkDuration+2);
+        exitBlocker.SetActive(true);
         camCutScene.SetActive(false);
         camMain.gameObject.SetActive(true);
         other.GetComponent<CharacterMovement1>().enabled = true;
         other.GetComponent<MouseLook>().enabled = true;
+        yield return new WaitForSeconds(5);
+        mouse.SetActive(true);
 
         //disable this script
         GetComponent<ShrinkPlayer>().enabled = false;
