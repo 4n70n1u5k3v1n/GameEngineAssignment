@@ -20,6 +20,7 @@ public class PlayerInteraction: MonoBehaviour
     private int batterySlotCount = 4; //number of battery slots
     private int filledSlots = 0; //number of filled battery slots
     [SerializeField] GameObject ovenDoor;
+    [SerializeField] private Animator ovenAnimator;
 
     void Start()
     {
@@ -127,8 +128,8 @@ public class PlayerInteraction: MonoBehaviour
     IEnumerator OpenOven()
     {
         ovenDoor.GetComponent<Animator>().enabled = true;
-        ovenDoor.GetComponent<OvenFlip>().enabled = true;
         button.layer = 0;
-        yield return null;
+        yield return new WaitForSeconds(5);
+        ovenAnimator.Play("OpenOven");
     }
 }
