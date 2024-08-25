@@ -18,6 +18,7 @@ public class JigsawResetButton : MonoBehaviour
         foreach (GameObject piece in puzzlePieces)
         {
             Vector3 randomPosition = GetRandomPosition();
+            randomPosition.y = piece.transform.position.y; // Preserve the original y value
             piece.transform.position = randomPosition;
         }
     }

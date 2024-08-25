@@ -9,6 +9,8 @@ TagManager:
   - Pickup
   - OvenButton
   - Enemy
+  - Note
+  - JigsawCamera
   layers:
   - Default
   - TransparentFX
