@@ -7,14 +7,14 @@ public class SwitchCamera : MonoBehaviour
     public Camera playerCamera;       // The main camera, typically the one following the player
     public Camera overheadCamera;     // The overhead camera for the puzzle view
     public KeyCode switchKey = KeyCode.P;  // The key to switch between cameras
-    public DragAndDrop_ dragAndDropScript; // Reference to the DragAndDrop_ script
+    //public DragAndDrop_ dragAndDropScript; // Reference to the DragAndDrop_ script
     private bool isPlayerInTrigger = false;
 
     void Start()
     {
         // Ensure that the overhead camera is disabled at the start
         overheadCamera.gameObject.SetActive(false);
-        playerCamera = dragAndDropScript.mainCamera; // Use the main camera from DragAndDrop_
+        playerCamera = Camera.main; // Use the main camera from DragAndDrop_
         playerCamera.gameObject.SetActive(true);
         LockCursor(true); // Lock the cursor initially
     }

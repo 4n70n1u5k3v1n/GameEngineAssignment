@@ -1,7 +1,9 @@
 using SojaExiles;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -26,11 +28,15 @@ public class PlayerInteraction : MonoBehaviour
     private NoteScript activeNote;
     private GameObject interactMessage;
 
+    // Variables for potion
+    private bool ovenOpened;
+
     void Start()
     {
         playerCamera = Camera.main;
         interactMessage = GameObject.Find("InteractMessage");
         interactMessage.SetActive(false);
+        ovenOpened = false;
     }
 
     void Update()
@@ -97,6 +103,10 @@ public class PlayerInteraction : MonoBehaviour
                     }
                 }
             }
+            else if (hit.collider.CompareTag("Potion") && ovenOpened) // Get potion if oven opened
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
         }
     }
 
@@ -106,7 +116,7 @@ public class PlayerInteraction : MonoBehaviour
         Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0)); // Ray from the center of the screen
         if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactionLayerMask))
         {
-            if (hit.collider.CompareTag("Note")) // Check if the raycast hit a note
+            if (hit.collider.CompareTag("Note") || hit.collider.CompareTag("BatterySlot") || hit.collider.CompareTag("Pickup") || hit.collider.CompareTag("BatterySlot") || hit.collider.CompareTag("Potion") || hit.collider.CompareTag("OvenButton")) // Check if the raycast hit a note or any interactable objects
             {
                 if (!interactMessage.activeSelf)
                 {
@@ -223,5 +233,6 @@ public class PlayerInteraction : MonoBehaviour
         button.layer = 0;
         yield return new WaitForSeconds(5);
         ovenAnimator.Play("OpenOven");
+        ovenOpened = true;
     }
 }
