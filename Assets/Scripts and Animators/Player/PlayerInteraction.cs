@@ -7,6 +7,24 @@ using UnityEngine.SceneManagement;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        GameObject audioObject = GameObject.FindGameObjectWithTag("Audio");
+        if (audioObject != null)
+        {
+            audioManager = audioObject.GetComponent<AudioManager>();
+            if (audioManager == null)
+            {
+                Debug.LogError("AudioManager component not found on the 'Audio' GameObject.");
+            }
+        }
+        else
+        {
+            Debug.LogError("GameObject named 'Audio' not found.");
+        }
+    }
     //variables needed to shoot rays
     private Camera playerCamera;
     public float interactRange = 5f; //max range to interact with objects
@@ -72,6 +90,7 @@ public class PlayerInteraction : MonoBehaviour
             else if (hit.collider.CompareTag("OvenButton"))
             {
                 StartCoroutine(OpenOven());
+                audioManager.PlaySFX(audioManager.ButtonPress);
             }
             else if (hit.collider.CompareTag("Note")) //interacting with a note
             {
@@ -153,6 +172,7 @@ public class PlayerInteraction : MonoBehaviour
 
     void PickupObject(GameObject obj)
     {
+        audioManager.PlaySFX(audioManager.BatteryPickup);
         heldObject = obj;
         Rigidbody rb = obj.GetComponent<Rigidbody>();
         if (rb != null)
@@ -179,6 +199,7 @@ public class PlayerInteraction : MonoBehaviour
 
     void PlaceBatteryInSlot(GameObject slot)
     {
+        audioManager.PlaySFX(audioManager.BatteryInsertion);
         heldObject.transform.position = slot.transform.position;
         heldObject.transform.rotation = slot.transform.rotation;
         heldObject.transform.parent = null;
@@ -208,6 +229,7 @@ public class PlayerInteraction : MonoBehaviour
 
     IEnumerator OpenOven()
     {
+        audioManager.PlaySFX(audioManager.OvenDing);
         ovenDoor.GetComponent<Animator>().enabled = true;
         button.layer = 0;
         yield return new WaitForSeconds(5);

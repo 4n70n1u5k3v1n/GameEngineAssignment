@@ -12,6 +12,7 @@ TagManager:
   - Note
   - JigsawCamera
   - Potion
+  - Audio
   layers:
   - Default
   - TransparentFX

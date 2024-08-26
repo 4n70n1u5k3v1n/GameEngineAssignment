@@ -5,7 +5,28 @@ using UnityEngine.SceneManagement;
 using static UnityEngine.GraphicsBuffer;
 
 public class MouseAI : MonoBehaviour
+
 {
+
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        GameObject audioObject = GameObject.FindGameObjectWithTag("Audio");
+        if (audioObject != null)
+        {
+            audioManager = audioObject.GetComponent<AudioManager>();
+            if (audioManager == null)
+            {
+                Debug.LogError("AudioManager component not found on the 'Audio' GameObject.");
+            }
+        }
+        else
+        {
+            Debug.LogError("GameObject named 'Audio' not found.");
+        }
+    }
+
     [SerializeField] private float walkSpeed = 2f;
     [SerializeField] private float obstacleRange = 1f;
     [SerializeField] private float rotSpeed = 7f;
@@ -53,6 +74,7 @@ public class MouseAI : MonoBehaviour
         if (state == MouseState.Seek)
         {
             Seeking();
+            
         }
         else
         {
@@ -133,6 +155,7 @@ public class MouseAI : MonoBehaviour
 
     void Seeking()
     {
+        audioManager.PlaySFX(audioManager.MouseAngry);
         Vector3 toTarget = player.transform.position - transform.position;
         toTarget.y = 0;
         Quaternion targetRotation = Quaternion.LookRotation(toTarget);
@@ -144,12 +167,15 @@ public class MouseAI : MonoBehaviour
 
     void PlayerCaught()
     {
+        
         float xDiff = player.transform.position.x - transform.position.x;
         float zDiff = player.transform.position.z - transform.position.z;
         float planeDiff = Mathf.Sqrt(Mathf.Pow(xDiff, 2) + Mathf.Pow(zDiff, 2));
         if (planeDiff < 0.5f)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            
+            SceneManager.LoadScene("GameOver");
+            
         }
     }
 }

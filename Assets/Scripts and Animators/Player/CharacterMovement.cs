@@ -4,6 +4,25 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        GameObject audioObject = GameObject.FindGameObjectWithTag("Audio");
+        if (audioObject != null)
+        {
+            audioManager = audioObject.GetComponent<AudioManager>();
+            if (audioManager == null)
+            {
+                Debug.LogError("AudioManager component not found on the 'Audio' GameObject.");
+            }
+        }
+        else
+        {
+            Debug.LogError("GameObject named 'Audio' not found.");
+        }
+    }
+
     public float speed = 6f; //movement speed
     public float jumpSpeed = 8f;
     public float gravity = -5f;
@@ -55,6 +74,7 @@ public class CharacterMovement : MonoBehaviour
             {
                 vertSpeed = jumpSpeed;
                 animator.SetTrigger("Jump");
+                audioManager.PlaySFX(audioManager.Jump);
             }
         }
         else if (!controller.isGrounded)

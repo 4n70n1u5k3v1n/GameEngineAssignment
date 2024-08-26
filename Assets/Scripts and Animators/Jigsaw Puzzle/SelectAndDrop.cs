@@ -4,6 +4,24 @@ using UnityEngine;
 
 public class SelectAndDrop : MonoBehaviour
 {
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        GameObject audioObject = GameObject.FindGameObjectWithTag("Audio");
+        if (audioObject != null)
+        {
+            audioManager = audioObject.GetComponent<AudioManager>();
+            if (audioManager == null)
+            {
+                Debug.LogError("AudioManager component not found on the 'Audio' GameObject.");
+            }
+        }
+        else
+        {
+            Debug.LogError("GameObject named 'Audio' not found.");
+        }
+    }
     private GameObject selectedPiece;
     private bool isDragging = false;
     public Camera mainCamera; //reference to the jigsaw camera
@@ -147,6 +165,7 @@ public class SelectAndDrop : MonoBehaviour
 
         if (doorAnimator.isActiveAndEnabled)
         {
+            audioManager.PlaySFX(audioManager.GlassDoor);
             doorAnimator.Play("Opening 1");
             battery.layer = 8;
         }
