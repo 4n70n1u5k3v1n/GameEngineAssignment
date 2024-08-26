@@ -145,9 +145,16 @@ public class SelectAndDrop : MonoBehaviour
             doorAnimator.enabled = isPuzzleComplete;
         }
 
-        if (doorScript != null)
+        /*if (doorScript != null)
         {
             doorScript.enabled = isPuzzleComplete;
+        }*/
+        if (doorAnimator.isActiveAndEnabled && doorScript.isActiveAndEnabled)
+        {
+            doorAnimator.Play("Opening 1");
+            //doorAnimator.enabled = false;
+            //doorScript.enabled = false;  
+
         }
     }
 }
