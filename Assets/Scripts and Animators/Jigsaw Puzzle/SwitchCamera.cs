@@ -4,69 +4,88 @@ using UnityEngine;
 
 public class SwitchCamera : MonoBehaviour
 {
-    public Camera playerCamera;       //the main camera
-    public Camera overheadCamera;     //the overhead camera for the puzzle view
-    public KeyCode switchKey = KeyCode.P;  //the key to switch between cameras
+    public Camera playerCamera;       // The main camera
+    public Camera overheadCamera;     // The overhead camera for the puzzle view
+    public KeyCode switchKey = KeyCode.P;  // The key to switch between cameras
     private bool isPlayerInTrigger = false;
+
+    public GameObject cheatButton; // Reference to the cheat button
+    public GameObject cheatText; // Reference to the cheat text
+    public GameObject resetButton; // Reference to the reset button
+    public GameObject resetText; // Reference to the reset text
+    public GameObject puzzleFrame; // Reference to the puzzle frame
+    public GameObject puzzleImage; // Reference to the puzzle image
 
     void Start()
     {
-        //ensure that the overhead camera is disabled at the start
+        // Ensure that the overhead camera is disabled at the start
         overheadCamera.gameObject.SetActive(false);
         playerCamera = Camera.main;
         playerCamera.gameObject.SetActive(true);
-        LockCursor(true); //lock the cursor initially
+        LockCursor(true); // Lock the cursor initially
+
+        // Ensure buttons are initially disabled
+        SetObjectsVisibility(false);
     }
 
     void Update()
     {
-        //check if the player is in the trigger area and the switch key is pressed
+        // Check if the player is in the trigger area and the switch key is pressed
         if (isPlayerInTrigger && Input.GetKeyDown(switchKey))
         {
             if (playerCamera.gameObject.activeSelf)
             {
                 Debug.Log("Switching to overhead camera.");
-                //switch to the overhead camera
+                // Switch to the overhead camera
                 playerCamera.gameObject.SetActive(false);
                 overheadCamera.gameObject.SetActive(true);
-                LockCursor(false); //unlock the cursor
+                LockCursor(false); // Unlock the cursor
+
+                // Enable buttons
+                SetObjectsVisibility(true);
             }
             else
             {
                 Debug.Log("Switching to player camera.");
-                //switch back to the player camera
+                // Switch back to the player camera
                 overheadCamera.gameObject.SetActive(false);
                 playerCamera.gameObject.SetActive(true);
-                LockCursor(true); //lock the cursor
+                LockCursor(true); // Lock the cursor
+
+                // Disable buttons
+                SetObjectsVisibility(false);
             }
         }
     }
 
-    //detect when the player enters the trigger area
+    // Detect when the player enters the trigger area
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) //assuming the player has the "Player" tag
+        if (other.CompareTag("Player")) // Assuming the player has the "Player" tag
         {
             isPlayerInTrigger = true;
             Debug.Log("Player entered the puzzle area.");
         }
     }
 
-    //detect when the player leaves the trigger area
+    // Detect when the player leaves the trigger area
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             isPlayerInTrigger = false;
             Debug.Log("Player left the puzzle area.");
-            //ensure the player camera is active and the overhead camera is inactive
+            // Ensure the player camera is active and the overhead camera is inactive
             overheadCamera.gameObject.SetActive(false);
             playerCamera.gameObject.SetActive(true);
-            LockCursor(true); //lock the cursor
+            LockCursor(true); // Lock the cursor
+
+            // Disable buttons
+            SetObjectsVisibility(false);
         }
     }
 
-    //method to lock or unlock the cursor
+    // Method to lock or unlock the cursor
     private void LockCursor(bool lockCursor)
     {
         if (lockCursor)
@@ -79,5 +98,20 @@ public class SwitchCamera : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
+    }
+
+    // Method to set the visibility of the buttons
+    private void SetObjectsVisibility(bool isVisible)
+    {
+        cheatButton.GetComponent<MeshRenderer>().enabled = isVisible;
+        resetButton.GetComponent<MeshRenderer>().enabled = isVisible;
+        puzzleFrame.GetComponent<MeshRenderer>().enabled = isVisible;
+
+        // Enable/Disable TextMeshPro components
+        cheatText.GetComponent<MeshRenderer>().enabled = isVisible;
+        resetText.GetComponent<MeshRenderer>().enabled = isVisible;
+
+        // Enable / Disable sprite renderer
+        puzzleImage.GetComponent<SpriteRenderer>().enabled = isVisible;
     }
 }
