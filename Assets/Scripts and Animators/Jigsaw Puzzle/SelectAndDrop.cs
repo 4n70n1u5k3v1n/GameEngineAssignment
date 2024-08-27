@@ -22,23 +22,30 @@ public class SelectAndDrop : MonoBehaviour
             Debug.LogError("GameObject named 'Audio' not found.");
         }
     }
+
     private GameObject selectedPiece;
     private bool isDragging = false;
-    public Camera mainCamera; //reference to the jigsaw camera
-    public float snapThreshold = 0.8f; //adjust this value as needed
+    public Camera mainCamera; // Reference to the jigsaw camera
+    public float snapThreshold = 0.8f; // Adjust this value as needed
     public Dictionary<GameObject, Vector3> correctPositions = new Dictionary<GameObject, Vector3>();
 
-    //reference to the door GameObject and Battery inside it
+    // Reference to the door GameObject and Battery inside it
     public GameObject door;
     private Animator doorAnimator;
     private MonoBehaviour doorScript;
     public GameObject battery;
 
+    // Reference to the snap audio clip
+    public AudioClip snapAudioClip;
+
+    // Reference to puzzle completion audio clip
+    public AudioClip puzzleCompletionAudioClip;
+
     void Start()
     {
         mainCamera = GameObject.FindGameObjectWithTag("JigsawCamera").GetComponent<Camera>();
 
-        //initialize correct positions for each puzzle piece using local positions
+        // Initialize correct positions for each puzzle piece using local positions
         correctPositions.Add(GameObject.Find("Piece (0)"), new Vector3(-4.3432f, 1.2459f, 4.9769f));
         correctPositions.Add(GameObject.Find("Piece (1)"), new Vector3(-4.3549f, 1.2459f, 5.0566f));
         correctPositions.Add(GameObject.Find("Piece (2)"), new Vector3(-4.3432f, 1.2459f, 5.1371f));
@@ -76,10 +83,10 @@ public class SelectAndDrop : MonoBehaviour
         correctPositions.Add(GameObject.Find("Piece (34)"), new Vector3(-4.1133f, 1.2459f, 5.0561f));
         correctPositions.Add(GameObject.Find("Piece (35)"), new Vector3(-4.0322f, 1.2459f, 5.0563f));
 
-        //initialize door references
+        // Initialize door references
         if (door != null)
         {
-            //ensure both components are initially disabled
+            // Ensure both components are initially disabled
             if (doorAnimator != null)
             {
                 doorAnimator.enabled = false;
@@ -113,24 +120,25 @@ public class SelectAndDrop : MonoBehaviour
             {
                 isDragging = false;
 
-                //project the mouse point in world space and convert to local position
+                // Project the mouse point in world space and convert to local position
                 Vector3 mousePoint = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, mainCamera.WorldToScreenPoint(selectedPiece.transform.position).z));
                 selectedPiece.transform.localPosition = selectedPiece.transform.parent.InverseTransformPoint(mousePoint);
 
-                //check if the piece is close enough to its correct position
+                // Check if the piece is close enough to its correct position
                 if (correctPositions.ContainsKey(selectedPiece))
                 {
                     Vector3 correctPosition = correctPositions[selectedPiece];
                     if (Vector3.Distance(selectedPiece.transform.localPosition, correctPosition) <= snapThreshold)
                     {
-                        //snap to the correct position
+                        // Snap to the correct position
                         selectedPiece.transform.localPosition = correctPosition;
+                        PlaySnapAudio(); // Play snap audio
                     }
                 }
 
                 selectedPiece = null;
 
-                //check if the puzzle is completed
+                // Check if the puzzle is completed
                 CheckPuzzleCompletion();
             }
         }
@@ -139,6 +147,15 @@ public class SelectAndDrop : MonoBehaviour
         {
             Vector3 mousePoint = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, mainCamera.WorldToScreenPoint(selectedPiece.transform.position).z));
             selectedPiece.transform.localPosition = selectedPiece.transform.parent.InverseTransformPoint(mousePoint);
+        }
+    }
+
+    // Method to play the snap audio
+    private void PlaySnapAudio()
+    {
+        if (audioManager != null && snapAudioClip != null)
+        {
+            audioManager.PlaySFX(snapAudioClip);
         }
     }
 
@@ -157,7 +174,7 @@ public class SelectAndDrop : MonoBehaviour
 
         doorAnimator = door.GetComponent<Animator>();
 
-        //enable or disable the door's animator based on the puzzle's state
+        // Enable or disable the door's animator based on the puzzle's state
         if (doorAnimator != null)
         {
             doorAnimator.enabled = isPuzzleComplete;
@@ -168,6 +185,19 @@ public class SelectAndDrop : MonoBehaviour
             audioManager.PlaySFX(audioManager.GlassDoor);
             doorAnimator.Play("Opening 1");
             battery.layer = 8;
+
+            // Start coroutine to play completion audio after 1.5 seconds
+            StartCoroutine(PlayCompletionAudioWithDelay(1.5f));
+        }
+    }
+
+    // Coroutine to play the completion audio after a delay
+    private IEnumerator PlayCompletionAudioWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (audioManager != null && puzzleCompletionAudioClip != null)
+        {
+            audioManager.PlaySFX(puzzleCompletionAudioClip);
         }
     }
 }

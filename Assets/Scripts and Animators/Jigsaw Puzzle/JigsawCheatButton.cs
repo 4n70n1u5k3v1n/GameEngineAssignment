@@ -4,24 +4,40 @@ using UnityEngine;
 
 public class JigsawCheatButton : MonoBehaviour
 {
-    //reference to the SelectAndDrop script
+    // Reference to the SelectAndDrop script
     public SelectAndDrop selectAndDrop;
+
+    // Reference to the cheat audio clip
+    public AudioClip cheatAudioClip;
+
+    // Reference to the AudioSource component
+    private AudioSource audioSource;
 
     void Start()
     {
-        //ensure the reference to SelectAndDrop is set
+        // Ensure the reference to SelectAndDrop is set
         if (selectAndDrop == null)
         {
             selectAndDrop = FindObjectOfType<SelectAndDrop>();
+        }
+
+        // Get or add the AudioSource component
+        audioSource = gameObject.GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
         }
     }
 
     void OnMouseDown()
     {
-        //reset the puzzle pieces to their correct positions
+        // Play the cheat audio
+        PlayCheatAudio();
+
+        // Reset the puzzle pieces to their correct positions
         ResetPieces();
 
-        //check if the puzzle is completed
+        // Check if the puzzle is completed
         selectAndDrop.CheckPuzzleCompletion();
     }
 
@@ -30,6 +46,15 @@ public class JigsawCheatButton : MonoBehaviour
         foreach (var piece in selectAndDrop.correctPositions)
         {
             piece.Key.transform.localPosition = piece.Value;
+        }
+    }
+
+    // Method to play the cheat audio
+    private void PlayCheatAudio()
+    {
+        if (cheatAudioClip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(cheatAudioClip);
         }
     }
 }
