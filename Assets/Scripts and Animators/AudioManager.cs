@@ -15,6 +15,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip OvenDing;
     public AudioClip GlassDoor;
     public AudioClip Jump;
+    public AudioClip Magic;
+    public AudioClip NotePickup;
+    public AudioClip NoteClose;
 
     public void PlaySFX(AudioClip clip)
     {

@@ -10,18 +10,16 @@ public class PauseMenu : MonoBehaviour
     private AudioSource[] allAudioSources;
     private Animator[] allAnimators;
     private CharacterController[] allCharacterControllers;
+    private MouseLook[] allMouseLookScripts;
 
-    // Start is called before the first frame update
     void Start()
     {
         pauseMenu.SetActive(false);
-        // Find all AudioSource, Animator, and CharacterController components in the scene
-        allAudioSources = FindObjectsOfType<AudioSource>();
         allAnimators = FindObjectsOfType<Animator>();
         allCharacterControllers = FindObjectsOfType<CharacterController>();
+        allMouseLookScripts = FindObjectsOfType<MouseLook>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -43,11 +41,11 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
 
-        // Show and unlock the cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        // Pause all audio sources
+        // Dynamically find all audio sources every time the game is paused
+        allAudioSources = FindObjectsOfType<AudioSource>();
         foreach (AudioSource audio in allAudioSources)
         {
             if (audio.isPlaying)
@@ -56,16 +54,19 @@ public class PauseMenu : MonoBehaviour
             }
         }
 
-        // Pause all animators
         foreach (Animator animator in allAnimators)
         {
             animator.speed = 0f;
         }
 
-        // Disable all character controllers
         foreach (CharacterController controller in allCharacterControllers)
         {
             controller.enabled = false;
+        }
+
+        foreach (MouseLook mouseLook in allMouseLookScripts)
+        {
+            mouseLook.enabled = false;
         }
 
         isPaused = true;
@@ -77,36 +78,36 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
 
-        // Lock and hide the cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        // Resume all audio sources
         foreach (AudioSource audio in allAudioSources)
         {
-            if (audio != null) // Check to avoid null reference errors
+            if (audio != null)
             {
                 audio.UnPause();
             }
         }
 
-        // Resume all animators
         foreach (Animator animator in allAnimators)
         {
             animator.speed = 1f;
         }
 
-        // Enable all character controllers
         foreach (CharacterController controller in allCharacterControllers)
         {
             controller.enabled = true;
         }
 
+        foreach (MouseLook mouseLook in allMouseLookScripts)
+        {
+            mouseLook.enabled = true;
+        }
+
         isPaused = false;
     }
 
-
-public void QuitGame()
+    public void QuitGame()
     {
         Debug.Log("Game Quit");
         Application.Quit();

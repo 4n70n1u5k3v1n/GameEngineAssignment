@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class PlayerInteraction : MonoBehaviour
 {
+
+    FadeInOut fade;
+
     AudioManager audioManager;
 
     private void Awake()
@@ -51,6 +54,7 @@ public class PlayerInteraction : MonoBehaviour
 
     void Start()
     {
+        fade = FindObjectOfType<FadeInOut>();
         playerCamera = Camera.main;
         interactMessage = GameObject.Find("InteractMessage");
         interactMessage.SetActive(false);
@@ -117,7 +121,7 @@ public class PlayerInteraction : MonoBehaviour
             }
             else if (hit.collider.CompareTag("Potion") && ovenOpened) //allow interaction with potion if oven opened
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                StartCoroutine(ChangeScene());
             }
         }
     }
@@ -235,5 +239,13 @@ public class PlayerInteraction : MonoBehaviour
         yield return new WaitForSeconds(5);
         ovenAnimator.Play("OpenOven");
         ovenOpened = true;
+    }
+
+    public IEnumerator ChangeScene()
+    {
+        audioManager.PlaySFX(audioManager.Magic);
+        fade.FadeIn();
+        yield return new WaitForSeconds(16);
+        SceneManager.LoadScene("TBC");
     }
 }
