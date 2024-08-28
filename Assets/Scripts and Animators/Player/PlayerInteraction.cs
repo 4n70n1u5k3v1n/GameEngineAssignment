@@ -30,7 +30,7 @@ public class PlayerInteraction : MonoBehaviour
     }
     //variables needed to shoot rays
     private Camera playerCamera;
-    public float interactRange = 5f; //max range to interact with objects
+    public float interactRange = 0.5f; //max range to interact with objects
     public LayerMask interactionLayerMask; //layer mask to define what objects are interactable
 
     //variables needed to pick up objects
