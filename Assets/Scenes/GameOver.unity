@@ -149,9 +149,10 @@ RectTransform:
   m_GameObject: {fileID: 254878458}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3, y: 1.46, z: 1.3}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2138901140}
   - {fileID: 1895656956}
   - {fileID: 495982641}
   m_Father: {fileID: 1703456923}
@@ -199,7 +200,7 @@ AudioSource:
   m_GameObject: {fileID: 413318234}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: a9f91a35be339d64faa027440c07f1b5, type: 2}
   m_audioClip: {fileID: 8300000, guid: 204b2f3742181534b88481696d2b6d25, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -527,7 +528,7 @@ AudioSource:
   m_GameObject: {fileID: 705037340}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: a9f91a35be339d64faa027440c07f1b5, type: 2}
   m_audioClip: {fileID: 8300000, guid: 454d880c905acab4f8fdc6a3d1bde8d1, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -747,7 +748,7 @@ AudioSource:
   m_GameObject: {fileID: 1170320667}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: a9f91a35be339d64faa027440c07f1b5, type: 2}
   m_audioClip: {fileID: 8300000, guid: 87b0ffd6cbcc0ed458c67708fa003a5c, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -1037,7 +1038,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2138901140}
   - {fileID: 254878459}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1203,12 +1203,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2138901139}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.78, y: 0.69, z: 0.69}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1703456923}
+  m_Father: {fileID: 254878459}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1229,7 +1229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

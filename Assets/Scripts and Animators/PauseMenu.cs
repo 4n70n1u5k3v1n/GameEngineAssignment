@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenu;
+    public GameObject settingsMenu; // Reference to the settings menu
     public bool isPaused;
 
     private AudioSource[] allAudioSources;
@@ -15,6 +17,7 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         pauseMenu.SetActive(false);
+        settingsMenu.SetActive(false); // Ensure settings menu is not active initially
         allAnimators = FindObjectsOfType<Animator>();
         allCharacterControllers = FindObjectsOfType<CharacterController>();
         allMouseLookScripts = FindObjectsOfType<MouseLook>();
@@ -22,7 +25,8 @@ public class PauseMenu : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // Check if Escape is pressed and the settings menu is not active
+        if (Input.GetKeyDown(KeyCode.Escape) && !settingsMenu.activeSelf)
         {
             if (isPaused)
             {
@@ -76,6 +80,7 @@ public class PauseMenu : MonoBehaviour
     {
         Debug.Log("Game Resumed");
         pauseMenu.SetActive(false);
+        settingsMenu.SetActive(false); // Make sure to close the settings menu
         Time.timeScale = 1f;
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -109,7 +114,19 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        Debug.Log("Game Quit");
-        Application.Quit();
+        Debug.Log("MainMenu");
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void OpenSettings()
+    {
+        pauseMenu.SetActive(false);
+        settingsMenu.SetActive(true);
+    }
+
+    public void CloseSettings()
+    {
+        settingsMenu.SetActive(false);
+        pauseMenu.SetActive(true);
     }
 }
