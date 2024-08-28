@@ -18,6 +18,10 @@ public class AudioManager : MonoBehaviour
     public AudioClip Magic;
     public AudioClip NotePickup;
     public AudioClip NoteClose;
+    public AudioClip SnapAudioClip;
+    public AudioClip PuzzleCompletionAudioClip;
+    public AudioClip ResetAudioClip;
+    public AudioClip CheatAudioClip;
 
     public void PlaySFX(AudioClip clip)
     {

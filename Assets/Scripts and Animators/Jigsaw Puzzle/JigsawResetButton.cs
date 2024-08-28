@@ -7,19 +7,24 @@ public class JigsawResetButton : MonoBehaviour
     public Transform scatterArea; // Transform indicating the scatter area
     public float scatterRadius = 5f; // Radius for scattering pieces
 
-    // Reference to the reset audio clip
-    public AudioClip resetAudioClip;
-
-    // Reference to the AudioSource component
-    private AudioSource audioSource;
+    // Reference to the AudioManager
+    private AudioManager audioManager;
 
     void Start()
     {
-        // Get or add the AudioSource component
-        audioSource = gameObject.GetComponent<AudioSource>();
-        if (audioSource == null)
+        // Find the AudioManager in the scene
+        GameObject audioObject = GameObject.FindGameObjectWithTag("Audio");
+        if (audioObject != null)
         {
-            audioSource = gameObject.AddComponent<AudioSource>();
+            audioManager = audioObject.GetComponent<AudioManager>();
+            if (audioManager == null)
+            {
+                Debug.LogError("AudioManager component not found on the 'Audio' GameObject.");
+            }
+        }
+        else
+        {
+            Debug.LogError("GameObject with tag 'Audio' not found.");
         }
     }
 
@@ -52,9 +57,9 @@ public class JigsawResetButton : MonoBehaviour
     // Method to play the reset audio
     private void PlayResetAudio()
     {
-        if (resetAudioClip != null && audioSource != null)
+        if (audioManager != null && audioManager.ResetAudioClip != null)
         {
-            audioSource.PlayOneShot(resetAudioClip);
+            audioManager.PlaySFX(audioManager.ResetAudioClip);
         }
     }
 }

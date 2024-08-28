@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SelectAndDrop : MonoBehaviour
 {
-    AudioManager audioManager;
+    private AudioManager audioManager;
 
     private void Awake()
     {
@@ -34,12 +34,6 @@ public class SelectAndDrop : MonoBehaviour
     private Animator doorAnimator;
     private MonoBehaviour doorScript;
     public GameObject battery;
-
-    // Reference to the snap audio clip
-    public AudioClip snapAudioClip;
-
-    // Reference to puzzle completion audio clip
-    public AudioClip puzzleCompletionAudioClip;
 
     void Start()
     {
@@ -153,9 +147,9 @@ public class SelectAndDrop : MonoBehaviour
     // Method to play the snap audio
     private void PlaySnapAudio()
     {
-        if (audioManager != null && snapAudioClip != null)
+        if (audioManager != null && audioManager.SnapAudioClip != null)
         {
-            audioManager.PlaySFX(snapAudioClip);
+            audioManager.PlaySFX(audioManager.SnapAudioClip);
         }
     }
 
@@ -186,18 +180,29 @@ public class SelectAndDrop : MonoBehaviour
             doorAnimator.Play("Opening 1");
             battery.layer = 8;
 
-            // Start coroutine to play completion audio after 1.5 seconds
-            StartCoroutine(PlayCompletionAudioWithDelay(1.5f));
+            StartCoroutine(PlayCompletionSequence());
         }
     }
 
-    // Coroutine to play the completion audio after a delay
-    private IEnumerator PlayCompletionAudioWithDelay(float delay)
+    // Coroutine to play the completion audio and door opening audio in sequence
+    private IEnumerator PlayCompletionSequence()
     {
-        yield return new WaitForSeconds(delay);
-        if (audioManager != null && puzzleCompletionAudioClip != null)
+        // Wait for 1 second after the puzzle is complete
+        yield return new WaitForSeconds(1f);
+
+        // Play the puzzle completion audio clip
+        if (audioManager != null && audioManager.PuzzleCompletionAudioClip != null)
         {
-            audioManager.PlaySFX(puzzleCompletionAudioClip);
+            audioManager.PlaySFX(audioManager.PuzzleCompletionAudioClip);
+        }
+
+        // Wait for 1 second after playing the puzzle completion audio clip
+        yield return new WaitForSeconds(1f);
+
+        // Play the glass door audio clip
+        if (audioManager != null && audioManager.GlassDoor != null)
+        {
+            audioManager.PlaySFX(audioManager.GlassDoor);
         }
     }
 }
