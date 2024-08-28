@@ -69,6 +69,7 @@ public class WitchTrap : MonoBehaviour
     {
         other.GetComponent<CharacterMovement>().enabled = false;
         other.GetComponent<MouseLook>().enabled = false;
+        other.GetComponent<PauseMenu>().enabled = false;
         camMain = Camera.main;
         camMain.gameObject.SetActive(false);
         camCutScene.SetActive(true);
@@ -78,6 +79,7 @@ public class WitchTrap : MonoBehaviour
         camMain.gameObject.SetActive(true);
         other.GetComponent<CharacterMovement>().enabled = true;
         other.GetComponent<MouseLook>().enabled = true;
+        other.GetComponent<PauseMenu>().enabled = true;
         yield return new WaitForSeconds(5);
         mouse.SetActive(true);
 

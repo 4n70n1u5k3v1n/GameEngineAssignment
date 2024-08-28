@@ -39,6 +39,7 @@ public class MouseAI : MonoBehaviour
     private int movingCount = 0;
 
     [SerializeField] private GameObject player;
+    public bool playerOnFirstFloor = true;
 
     public enum MouseState
     {
@@ -88,7 +89,7 @@ public class MouseAI : MonoBehaviour
         float zDiff = player.transform.position.z - transform.position.z;
         float planeDiff = Mathf.Sqrt(Mathf.Pow(xDiff, 2) + Mathf.Pow(zDiff, 2));
         float yDiff = Mathf.Abs(player.transform.position.y - transform.position.y);
-        if (planeDiff < 7f && yDiff < 0.5f)
+        if (planeDiff < 7f && yDiff < 0.5f && playerOnFirstFloor)
         {
             state = MouseState.Seek;
         }
